@@ -1,7 +1,8 @@
+setuptools
 aiohttp
 telethon
 requests
-undetected-chromedriver
+undetected-chromedriver>=3.5.0
 pyquery
 html-telegraph-poster
 python-telegram-bot
