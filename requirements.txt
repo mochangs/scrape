@@ -1,0 +1,8 @@
+aiohttp
+telethon
+requests
+undetected-chromedriver
+pyquery
+html-telegraph-poster
+python-telegram-bot
+selenium
