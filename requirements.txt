@@ -1,9 +1,5 @@
-setuptools
+aiofiles
 aiohttp
-telethon
-requests
-undetected-chromedriver>=3.5.0
-pyquery
-html-telegraph-poster
+beautifulsoup4
+pygoogletranslation
 python-telegram-bot
-selenium
