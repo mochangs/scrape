@@ -6,7 +6,7 @@ import re
 from http.client import responses
 from os import makedirs
 from os.path import  exists
-from pygoogletranslation import Translator
+# from pygoogletranslation import Translator
 import aiohttp
 
 from telethon import TelegramClient
@@ -24,7 +24,7 @@ import zipfile
 from telegram import Bot
 token='7168200642:AAGB0oVdKkAZ-Qztqech5PxEEdojstw0P30'
 bot=Bot(token=token)
-translator = Translator()
+# translator = Translator()
 # f翻译
 # driver_path=r'C:\Users\30936\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe'
 with open ('sentManga','a+',encoding='utf-8') as f:
@@ -296,18 +296,19 @@ def getTags():
             tag_texts = []
             for tag in tags:
                 raw = tag.text.strip()
-                if not raw:
-                    continue
-
-                try:
-                    if heads!='Languages:':
-                        translated = translator.translate(raw, src='en', dest='zh-cn').text
-                        tag_texts.append(f"#{translated}")
-                    else:
-                        tag_texts.append(tag)
-                except Exception as e:
-                    logging.warning(f"翻译失败: {raw} → 使用原文")
-                    tag_texts.append(f"#{raw}")
+                # if not raw:
+                #     continue
+                #
+                # # try:
+                # #     if heads!='Languages:':
+                # #         # translated = translator.translate(raw, src='en', dest='zh-cn').text
+                # #         # tag_texts.append(f"#{translated}")
+                # #     else:
+                # #         tag_texts.append(tag)
+                # # except Exception as e:
+                # #     logging.warning(f"翻译失败: {raw} → 使用原文")
+                # #     tag_texts.append(f"#{raw}")
+                tag_texts.append(tag)
 
             if tag_texts:
                 line = f'{heads} {" ".join(tag_texts)}'
