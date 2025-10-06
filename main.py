@@ -13,7 +13,8 @@ headers = {
     "Accept-Language": "en-US,en;q=0.5",
     "Referer": "https://www.google.com/"  # 模拟从搜索引擎跳转
 }
-Total_Page=5
+Total_Page=5216
+base='https://nhentai.net'
 # 爬取每一页含有的网页图片，返回每个本子的链接
 async def fetch(page,semaphore):
     try:
@@ -21,9 +22,17 @@ async def fetch(page,semaphore):
             async with session.get(page) as resp:
                 re=BeautifulSoup(await resp.text(), 'html.parser')
                 covers=re.find_all(class_='cover')
-                return [cover.get('href') for cover in covers]
+                urlList= [base+cover.get('href') for cover in covers]
+                await parse(urlList)
     except Exception as e:
         print(f"错误：{e}")
+async def parse(urlList):
+    for url in urlList:
+        async with aiohttp.ClientSession(headers=headers) as session:
+            async with session.get(url) as resp:
+                re=BeautifulSoup(await resp.text(), 'html.parser')
+                title=re.find('h1', class_='title').text.strip()
+                print(title)
 async def main():
     task=[]
     semaphore = asyncio.Semaphore(10)
