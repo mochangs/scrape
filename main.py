@@ -1,7 +1,7 @@
 import aiohttp
 import asyncio
-
-PAGE = 'https://nhentai.net/'
+from bs4 import BeautifulSoup
+INDEX_URL='https://nhentai.net/language/chinese/?page={page}'
 
 # 添加模拟浏览器的请求头，避免被识别为爬虫
 headers = {
@@ -10,15 +10,15 @@ headers = {
     "Accept-Language": "en-US,en;q=0.5",
     "Referer": "https://www.google.com/"  # 模拟从搜索引擎跳转
 }
-
-async def fetch():
+Total_Page=5216
+async def fetch(page):
     try:
         async with aiohttp.ClientSession(headers=headers) as session:  # 传入请求头
-            async with session.get(PAGE) as resp:
-                print(f"状态码：{resp.status}")
-                print(await resp.text()[:500])  # 只打印前500字符
+            async with session.get(page) as resp:
+                re=BeautifulSoup(await resp.text(), 'html.parser')
+                covers=re.find_all(class_='cover')
+                return [cover.get('href') for cover in covers]
     except Exception as e:
         print(f"错误：{e}")
 
-asyncio.run(fetch())
-    
+asyncio.run(fetch(INDEX_URL.format(page=1)))
