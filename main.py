@@ -1,6 +1,9 @@
 import aiohttp
 import asyncio
 from bs4 import BeautifulSoup
+
+
+
 INDEX_URL='https://nhentai.net/language/chinese/?page={page}'
 
 # 添加模拟浏览器的请求头，避免被识别为爬虫
@@ -11,15 +14,23 @@ headers = {
     "Referer": "https://www.google.com/"  # 模拟从搜索引擎跳转
 }
 Total_Page=5216
-async def fetch(page):
+# 爬取每一页含有的网页图片，返回每个本子的链接
+async def fetch(page,semaphore):
     try:
         async with aiohttp.ClientSession(headers=headers) as session:  # 传入请求头
             async with session.get(page) as resp:
                 re=BeautifulSoup(await resp.text(), 'html.parser')
                 covers=re.find_all(class_='cover')
-                list= [cover.get('href') for cover in covers]
-                print(list)
+                return [cover.get('href') for cover in covers]
     except Exception as e:
         print(f"错误：{e}")
+async def main():
+    task=[]
+    semaphore = asyncio.Semaphore(10)
+    for i in range(1,Total_Page+1):
+        url=INDEX_URL.format(page=i)
+        task.append(asyncio.create_task(fetch(url, semaphore)))
+    results=await asyncio.gather(*task, return_exceptions=True)
 
-asyncio.run(fetch(INDEX_URL.format(page=1)))
+if __name__ == '__main__':
+    asyncio.run(main())
