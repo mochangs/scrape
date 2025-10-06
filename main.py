@@ -1,3 +1,6 @@
+
+
+
 import aiohttp
 import asyncio
 from bs4 import BeautifulSoup
@@ -23,6 +26,7 @@ async def fetch(page,semaphore):
                 re=BeautifulSoup(await resp.text(), 'html.parser')
                 covers=re.find_all(class_='cover')
                 urlList= [base+cover.get('href') for cover in covers]
+                print(urlList)
                 await parse(urlList)
     except Exception as e:
         print(f"错误：{e}")
