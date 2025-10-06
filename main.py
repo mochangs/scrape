@@ -17,7 +17,8 @@ async def fetch(page):
             async with session.get(page) as resp:
                 re=BeautifulSoup(await resp.text(), 'html.parser')
                 covers=re.find_all(class_='cover')
-                return [cover.get('href') for cover in covers]
+                list= [cover.get('href') for cover in covers]
+                print(list)
     except Exception as e:
         print(f"错误：{e}")
 
