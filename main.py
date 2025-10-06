@@ -13,7 +13,7 @@ headers = {
     "Accept-Language": "en-US,en;q=0.5",
     "Referer": "https://www.google.com/"  # 模拟从搜索引擎跳转
 }
-Total_Page=5216
+Total_Page=5
 # 爬取每一页含有的网页图片，返回每个本子的链接
 async def fetch(page,semaphore):
     try:
